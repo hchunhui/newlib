@@ -1,0 +1,6 @@
+#!/bin/bash
+./play-binutils
+./play-gccp1
+./play-newlib
+./play-gccp2
+echo DONE
