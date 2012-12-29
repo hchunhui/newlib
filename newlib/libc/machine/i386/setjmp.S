@@ -75,7 +75,7 @@ SYM (longjmp):
 
 	movl	24(edi),ebp
 
-       __CLI
+//       __CLI
 	movl	28(edi),esp
 	
 	pushl	32(edi)	
@@ -86,6 +86,6 @@ SYM (longjmp):
 	movl	12(edi),edx
 	movl	16(edi),esi
 	movl	20(edi),edi
-       __STI
+//       __STI
 
 	ret

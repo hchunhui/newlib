@@ -8,6 +8,7 @@
 #include <fcntl.h>
 #include <utime.h>
 #include <dirent.h>
+#include <signal.h>
 #undef errno
 extern int errno;
 
@@ -41,6 +42,59 @@ int _kill(int pid, int sig)
 {
 	errno = EINVAL;
 	return -1;
+}
+
+int getppid()
+{
+	return usr_sys_call0(__NR_getppid);
+}
+
+int sigprocmask(int how, const sigset_t *set, sigset_t *oldset)
+{
+	errno = -EINVAL;
+	return -1;
+}
+
+int sigsuspend(const sigset_t *mask)
+{
+	errno = -EFAULT;
+	return -1;
+}
+
+int sigaction(int signum, const struct sigaction *act, struct sigaction *oldact)
+{
+	errno = EINVAL;
+	return -1;
+}
+
+int wait3(int *status, int options, struct rusage *rusage)
+{
+	return usr_sys_call3(__NR_waitpid, -1, status, options);
+}
+
+uid_t getuid()
+{
+	return 0;
+}
+
+uid_t geteuid()
+{
+	return 0;
+}
+
+gid_t getgid()
+{
+	return 0;
+}
+
+gid_t getegid()
+{
+	return 0;
+}
+
+int getgroups(int size, gid_t list[])
+{
+	return 0;
 }
 
 /* file */
@@ -97,6 +151,17 @@ char *getwd(char *buf)
 	buf[0] = '/';
 	buf[1] = 0;
 	return buf;
+}
+
+char *getcwd(char *buf, size_t size)
+{
+	return getwd(buf);
+}
+
+int chdir(const char *path)
+{
+	errno = EACCES;
+	return -1;
 }
 
 int _isatty(int fd)
@@ -183,6 +248,26 @@ int rmdir(const char *path)
 int _close(int fd)
 {
 	return usr_sys_call1(__NR_close, fd);
+}
+
+int dup2(int oldfd, int newfd)
+{
+	return usr_sys_call2(__NR_dup2, oldfd, newfd);
+}
+
+int pipe(int pipefd[])
+{
+	int fd1 = open("/dev/pipe/0", 0);
+	int fd2 = -1;
+	fd2 = dup2(fd1, -1);
+	if(fd2 == -1)
+	{
+		close(fd1);
+		return -1;
+	}
+	pipefd[0] = fd1;
+	pipefd[1] = fd2;
+	return 0;
 }
 
 /* memory */

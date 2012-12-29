@@ -513,6 +513,11 @@ esac
 # THIS TABLE IS ALPHA SORTED.  KEEP IT THAT WAY.
 
 case "${host}" in
+  i[34567]86-myos-elf)
+       sys_dir=myos
+       syscall_dir=syscalls
+       posix_dir=posix
+       ;;
   *-*-cygwin*)
 	test -z "$cygwin_srcdir" && cygwin_srcdir=`cd ${srcdir}/../winsup/cygwin; pwd`
 	export cygwin_srcdir

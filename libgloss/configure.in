@@ -34,9 +34,9 @@ dnl indicates whether to run configure within the libnosys subdirectory
 config_libnosys=true
 
 case "${target}" in
-  i[[3456]]86-*-elf* | i[[3456]]86-*-coff*)
-	AC_CONFIG_SUBDIRS([i386])
-	;;
+#  i[[3456]]86-*-elf* | i[[3456]]86-*-coff*)
+#	AC_CONFIG_SUBDIRS([i386])
+#	;;
   m32r-*-*)
 	AC_CONFIG_SUBDIRS([m32r])
 	;;
